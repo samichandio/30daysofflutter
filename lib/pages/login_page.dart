@@ -1,9 +1,16 @@
 import 'package:codewitht/utiles/routes.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  String name = "";
+  bool changeButton = false;
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -18,8 +25,8 @@ class LoginPage extends StatelessWidget {
               const SizedBox(
                 height: 20.0,
               ),
-              const Text(
-                "Welcome",
+              Text(
+                "Welcome $name",
                 style: TextStyle(fontSize: 28.0, fontWeight: FontWeight.bold),
               ),
               const SizedBox(
@@ -35,8 +42,12 @@ class LoginPage extends StatelessWidget {
                               borderRadius: BorderRadius.circular(10)),
                           hintText: " Enter Username",
                           labelText: "Username"),
+                      onChanged: (value) {
+                        name = value;
+                        setState(() {});
+                      },
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20.0,
                     ),
                     TextFormField(
@@ -47,21 +58,53 @@ class LoginPage extends StatelessWidget {
                           hintText: "Enter Password",
                           labelText: "Password"),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 30.0,
                     ),
-                    ElevatedButton(
-                      onPressed: () {
+                    InkWell(
+                      onTap: () async {
+                        setState(() {
+                          changeButton = true;
+                        });
+                        await Future.delayed(Duration(seconds: 1));
                         Navigator.pushNamed(context, MyRoutes.homeRoute);
                       },
-                      child: Text(
-                        "Login",
-                        style: TextStyle(color: Colors.white),
+                      child: AnimatedContainer(
+                        duration: Duration(seconds: 1),
+                        decoration: BoxDecoration(
+                            color: Colors.deepPurple,
+                            borderRadius:
+                                BorderRadius.circular(changeButton ? 50 : 8)),
+                        width: changeButton ? 50 : 150,
+                        height: 50,
+                        alignment: Alignment.center,
+                        child: changeButton
+                            ? Icon(
+                                Icons.done,
+                                color: Colors.white,
+                              )
+                            : Text(
+                                "Login",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18),
+                              ),
                       ),
-                      style: TextButton.styleFrom(
-                          backgroundColor: Colors.blueAccent,
-                          minimumSize: Size(150, 40)),
-                    ),
+                    )
+
+                    // ElevatedButton(
+                    //   onPressed: () {
+                    //     Navigator.pushNamed(context, MyRoutes.homeRoute);
+                    //   },
+                    //   child: Text(
+                    //     "Login",
+                    //     style: TextStyle(color: Colors.white),
+                    //   ),
+                    //   style: TextButton.styleFrom(
+                    //       backgroundColor: Colors.blueAccent,
+                    //       minimumSize: Size(150, 40)),
+                    // ),
                   ],
                 ),
               )
